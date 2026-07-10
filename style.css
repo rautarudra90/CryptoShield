@@ -1,0 +1,609 @@
+/* ===============================
+   CryptoShield Main Styling
+================================ */
+
+
+/* RESET */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+
+
+body{
+
+    min-height:100vh;
+
+    background:
+    linear-gradient(
+        rgba(15,23,42,0.85),
+        rgba(15,23,42,0.85)
+    ),
+    url("https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1600");
+
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+
+    overflow-x:hidden;
+
+}
+
+
+
+/* ===============================
+        INTRO SCREEN
+================================ */
+
+
+#intro{
+
+    position:fixed;
+
+    width:100%;
+    height:100vh;
+
+    background:
+    linear-gradient(
+        135deg,
+        #4f46e5,
+        #9333ea
+    );
+
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    z-index:9999;
+
+    transition:0.8s;
+
+}
+
+
+
+#intro.hide{
+
+    opacity:0;
+    visibility:hidden;
+
+}
+
+
+
+.logo{
+
+    color:white;
+
+    font-size:55px;
+
+    letter-spacing:5px;
+
+    font-weight:700;
+
+    animation:logoAnimation 1.5s ease;
+
+}
+
+
+
+@keyframes logoAnimation{
+
+
+0%{
+
+transform:scale(0.3);
+opacity:0;
+
+}
+
+
+60%{
+
+transform:scale(1.2);
+opacity:1;
+
+}
+
+
+100%{
+
+transform:scale(1);
+
+}
+
+
+}
+
+
+
+
+/* ===============================
+        BACKGROUND BLOBS
+================================ */
+
+
+.blob{
+
+    position:fixed;
+
+    width:300px;
+
+    height:300px;
+
+    border-radius:50%;
+
+    background:
+    linear-gradient(
+        135deg,
+        #6366f1,
+        #a855f7
+    );
+
+    filter:blur(120px);
+
+    opacity:0.3;
+
+    z-index:-1;
+
+    animation:floating 10s infinite;
+
+
+}
+
+
+
+.blob-one{
+
+    top:-100px;
+    left:-100px;
+
+}
+
+
+
+.blob-two{
+
+    right:-100px;
+    bottom:-100px;
+
+    animation-direction:reverse;
+
+}
+
+
+
+@keyframes floating{
+
+
+0%,100%{
+
+transform:translateY(0);
+
+}
+
+
+50%{
+
+transform:translateY(50px);
+
+}
+
+
+}
+
+
+
+
+/* ===============================
+        HOME PAGE
+================================ */
+
+
+#homePage{
+
+
+height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+
+}
+
+
+
+
+.card{
+
+
+background:
+rgba(255,255,255,0.08);
+
+
+backdrop-filter:blur(20px);
+
+
+padding:40px;
+
+
+border-radius:25px;
+
+
+box-shadow:
+
+0 20px 50px rgba(0,0,0,0.4);
+
+
+color:white;
+
+
+}
+
+
+
+.card-content{
+
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:40px;
+
+flex-wrap:wrap;
+
+
+}
+
+
+
+.hero-img{
+
+
+width:260px;
+
+border-radius:20px;
+
+
+animation:imageFloat 4s infinite;
+
+
+}
+
+
+
+@keyframes imageFloat{
+
+
+50%{
+
+transform:translateY(-15px);
+
+}
+
+
+}
+
+
+
+
+
+.text-box{
+
+
+max-width:350px;
+
+
+}
+
+
+
+.title{
+
+
+font-size:30px;
+
+margin-bottom:15px;
+
+
+}
+
+
+
+.subtitle{
+
+
+color:#ddd;
+
+margin-bottom:25px;
+
+
+}
+
+
+
+
+.btn{
+
+
+padding:14px 35px;
+
+border:none;
+
+border-radius:30px;
+
+
+background:
+
+linear-gradient(
+135deg,
+#4f46e5,
+#9333ea
+);
+
+
+color:white;
+
+font-size:16px;
+
+cursor:pointer;
+
+transition:.3s;
+
+
+}
+
+
+
+.btn:hover{
+
+
+transform:scale(1.08);
+
+box-shadow:
+0 0 25px #9333ea;
+
+
+}
+
+
+
+
+
+/* ===============================
+        TOOL PAGE
+================================ */
+
+
+
+#toolPage{
+
+
+display:none;
+
+min-height:100vh;
+
+justify-content:center;
+
+align-items:center;
+
+
+}
+
+
+
+.container{
+
+
+width:450px;
+
+background:white;
+
+
+padding:30px;
+
+
+border-radius:20px;
+
+
+box-shadow:
+
+0 15px 40px rgba(0,0,0,0.3);
+
+
+}
+
+
+
+.container h1{
+
+
+text-align:center;
+
+margin-bottom:20px;
+
+
+}
+
+
+
+
+label{
+
+
+font-weight:600;
+
+display:block;
+
+margin-top:15px;
+
+
+}
+
+
+
+
+
+textarea,
+input,
+select{
+
+
+width:100%;
+
+padding:12px;
+
+
+margin-top:8px;
+
+
+border-radius:10px;
+
+
+border:1px solid #ccc;
+
+
+font-size:14px;
+
+
+}
+
+
+
+
+textarea{
+
+
+height:100px;
+
+resize:none;
+
+
+}
+
+
+
+
+
+.buttons{
+
+
+display:grid;
+
+
+grid-template-columns:repeat(2,1fr);
+
+
+gap:12px;
+
+
+margin-top:20px;
+
+
+}
+
+
+
+
+.toolbtn{
+
+
+padding:12px;
+
+
+border:none;
+
+
+border-radius:10px;
+
+
+background:#667eea;
+
+
+color:white;
+
+
+font-weight:600;
+
+
+cursor:pointer;
+
+
+transition:.3s;
+
+
+}
+
+
+
+.toolbtn:hover{
+
+
+background:#4f46e5;
+
+
+transform:translateY(-3px);
+
+
+}
+
+
+
+
+
+
+/* ===============================
+        RESPONSIVE DESIGN
+================================ */
+
+
+
+@media(max-width:768px){
+
+
+.logo{
+
+font-size:35px;
+
+}
+
+
+.card{
+
+margin:20px;
+
+}
+
+
+
+.card-content{
+
+flex-direction:column;
+
+text-align:center;
+
+
+}
+
+
+.container{
+
+
+width:90%;
+
+
+}
+
+
+}
