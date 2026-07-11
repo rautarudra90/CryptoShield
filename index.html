@@ -2,19 +2,18 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>CryptoShield | Encryption System</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<title>CryptoShield | Modern Encryption System</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
+<meta name="description"
+content="CryptoShield is a modern multi encryption system using AES, RSA, Caesar, ROT13, Base64 and Binary encryption.">
 
-    <!-- CryptoJS AES Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<link rel="icon" href="assets/logo.png">
 
 </head>
 
@@ -22,67 +21,145 @@
 <body>
 
 
-<!-- ================= INTRO SCREEN ================= -->
+<!-- INTRO LOADER -->
 
-<div id="intro">
+<div id="loader">
 
-    <h1 class="logo">
-        CRYPTOSHIELD
-    </h1>
+<div class="loader-logo">
+<img src="assets/logo.png">
+</div>
+
+<h1>CRYPTOSHIELD</h1>
+
+<p>Secure • Encrypt • Protect</p>
+
+<div class="spinner"></div>
 
 </div>
 
 
 
-<!-- Floating Background Effects -->
+<!-- FLOATING BACKGROUND -->
 
-<div class="blob blob-one"></div>
-<div class="blob blob-two"></div>
+<div class="background">
 
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
 
-
-<!-- ================= HOME PAGE ================= -->
-
-<section id="homePage">
-
-
-    <div class="card">
+</div>
 
 
-        <div class="card-content">
+
+<!-- NAVBAR -->
+
+<header>
+
+<nav class="navbar">
 
 
-            <img 
-            src="https://images.unsplash.com/photo-1587614382346-4ec70e388b28?q=80&w=800"
-            class="hero-img"
-            alt="Cyber Security">
+<div class="brand">
+
+<img src="assets/logo.png">
+
+<span>
+CryptoShield
+</span>
+
+</div>
 
 
-            <div class="text-box">
+
+<ul class="nav-links">
+
+<li>
+<a href="#home">
+Home
+</a>
+</li>
 
 
-                <h1 class="title">
-                    Welcome To CryptoShield
-                </h1>
+<li>
+<a href="#dashboard">
+Dashboard
+</a>
+</li>
 
 
-                <p class="subtitle">
-                    Secure Inscription Encryption Management System
-                </p>
+<li>
+<a href="#features">
+Features
+</a>
+</li>
 
 
-                <button class="btn" onclick="startApp()">
-                    Get Started
-                </button>
+</ul>
 
 
-            </div>
+</nav>
+
+</header>
 
 
-        </div>
 
 
-    </div>
+
+<!-- HERO SECTION -->
+
+
+<section id="home" class="hero">
+
+
+<div class="hero-content">
+
+
+<h1>
+
+CRYPTOSHIELD
+
+</h1>
+
+
+<h2>
+
+Secure • Encrypt • Protect
+
+</h2>
+
+
+
+<p>
+
+Modern Multi Encryption System
+built with advanced browser cryptography.
+
+</p>
+
+
+
+<a href="#dashboard"
+class="primary-btn">
+
+Get Started
+
+</a>
+
+
+</div>
+
+
+
+<div class="hero-image">
+
+
+<img src="assets/hero.png"
+alt="Cyber Security">
+
+
+</div>
+
 
 
 </section>
@@ -91,114 +168,89 @@
 
 
 
-<!-- ================= TOOL PAGE ================= -->
-
-<section id="toolPage">
+<!-- DASHBOARD -->
 
 
-<div class="container">
+<section id="dashboard"
+class="dashboard-section">
 
 
-<h1>
-    🔐 Multi Encryption Tool
-</h1>
 
+<h2 class="section-title">
+
+Encryption Dashboard
+
+</h2>
+
+
+
+<div class="crypto-card">
+
+
+
+<div class="input-group">
 
 
 <label>
-    Select Algorithm
+Select Algorithm
 </label>
 
 
-<select id="algo">
+<select id="algorithm">
 
-<option value="aes">
-AES Encryption
-</option>
 
-<option value="rsa">
-RSA Encryption
+<option value="AES">
+AES
 </option>
 
 
-<option value="base64">
-Base64 Encode / Decode
+<option value="RSA">
+RSA
 </option>
 
 
-<option value="caesar">
+<option value="CAESAR">
 Caesar Cipher
 </option>
 
 
-<option value="rot13">
+<option value="ROT13">
 ROT13
 </option>
 
 
-<option value="binary">
-Binary Converter
+<option value="BASE64">
+Base64
+</option>
+
+
+<option value="BINARY">
+Binary
 </option>
 
 
 </select>
 
 
+</div>
 
+
+
+
+
+<div class="input-group">
 
 
 <label>
-    Enter Text
+Input Text
 </label>
 
 
 <textarea 
 id="inputText"
-placeholder="Enter your message here...">
+placeholder="Enter your message...">
+
 </textarea>
-
-
-
-
-
-<label>
-    Secret Key / Shift Value
-</label>
-
-
-<input 
-type="text"
-id="secretKey"
-placeholder="Enter key">
-
-
-
-
-
-<div class="buttons">
-
-
-<button class="toolbtn" onclick="encrypt()">
-Encrypt
-</button>
-
-
-
-<button class="toolbtn" onclick="decrypt()">
-Decrypt
-</button>
-
-
-
-<button class="toolbtn" onclick="generateRSA()">
-Generate RSA Keys
-</button>
-
-
-
-<button class="toolbtn" onclick="clearAll()">
-Clear
-</button>
 
 
 </div>
@@ -207,16 +259,269 @@ Clear
 
 
 
+<div class="input-group">
+
+
 <label>
-    Output
+Secret Key
 </label>
 
 
-<textarea 
+<input 
+type="password"
+id="secretKey"
+placeholder="Enter encryption key">
+
+
+</div>
+
+
+
+
+
+
+<div class="button-container">
+
+
+<button id="encryptBtn"
+class="action-btn">
+
+Encrypt
+
+</button>
+
+
+
+
+<button id="decryptBtn"
+class="action-btn">
+
+Decrypt
+
+</button>
+
+
+
+<button id="rsaBtn"
+class="action-btn">
+
+Generate RSA
+
+</button>
+
+
+
+<button id="copyBtn"
+class="action-btn">
+
+Copy
+
+</button>
+
+
+
+<button id="downloadBtn"
+class="action-btn">
+
+Download
+
+</button>
+
+
+
+<button id="clearBtn"
+class="danger-btn">
+
+Clear
+
+</button>
+
+
+
+</div>
+
+
+
+
+
+
+
+<div class="output-area">
+
+
+<label>
+Output
+</label>
+
+
+<textarea
 id="outputText"
 readonly
-placeholder="Result appears here...">
+placeholder="Encrypted result appears here...">
+
 </textarea>
+
+
+</div>
+
+
+
+
+
+
+<div class="status-box">
+
+
+<span>
+Status:
+</span>
+
+
+<p id="status">
+
+Ready
+
+</p>
+
+
+</div>
+
+
+
+</div>
+
+
+
+</section>
+
+
+
+
+
+
+
+<!-- SUPPORTED ALGORITHMS -->
+
+
+<section class="algorithms">
+
+
+<h2 class="section-title">
+
+Supported Algorithms
+
+</h2>
+
+
+
+
+<div class="algorithm-grid">
+
+
+
+<div class="algorithm-card">
+
+🔐
+
+<h3>
+AES
+</h3>
+
+<p>
+Advanced Encryption Standard
+</p>
+
+</div>
+
+
+
+
+<div class="algorithm-card">
+
+🔑
+
+<h3>
+RSA
+</h3>
+
+<p>
+Public Key Encryption
+</p>
+
+</div>
+
+
+
+
+
+<div class="algorithm-card">
+
+🔄
+
+<h3>
+Caesar
+</h3>
+
+<p>
+Classical Substitution Cipher
+</p>
+
+</div>
+
+
+
+
+
+
+<div class="algorithm-card">
+
+🔁
+
+<h3>
+ROT13
+</h3>
+
+<p>
+Letter Rotation Cipher
+</p>
+
+</div>
+
+
+
+
+
+<div class="algorithm-card">
+
+📦
+
+<h3>
+Base64
+</h3>
+
+<p>
+Encoding System
+</p>
+
+</div>
+
+
+
+
+
+<div class="algorithm-card">
+
+💻
+
+<h3>
+Binary
+</h3>
+
+<p>
+Text Binary Conversion
+</p>
+
+</div>
 
 
 
@@ -229,7 +534,139 @@ placeholder="Result appears here...">
 
 
 
-<!-- JavaScript -->
+
+
+<!-- FEATURES -->
+
+
+<section id="features"
+class="features">
+
+
+<h2 class="section-title">
+
+New Features
+
+</h2>
+
+
+
+<div class="feature-grid">
+
+
+<div class="feature-card">
+
+<h3>
+⚡ Real Encryption
+</h3>
+
+<p>
+Uses Web Crypto API for secure encryption.
+</p>
+
+</div>
+
+
+
+
+<div class="feature-card">
+
+<h3>
+📥 Download Result
+</h3>
+
+<p>
+Save encryption output instantly.
+</p>
+
+</div>
+
+
+
+
+
+<div class="feature-card">
+
+<h3>
+📋 Copy Output
+</h3>
+
+<p>
+Copy encrypted data quickly.
+</p>
+
+</div>
+
+
+
+
+
+<div class="feature-card">
+
+<h3>
+🔑 RSA Generator
+</h3>
+
+<p>
+Generate RSA key pairs securely.
+</p>
+
+</div>
+
+
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+
+
+<!-- FOOTER -->
+
+
+<footer>
+
+
+<h2>
+
+CryptoShield
+
+</h2>
+
+
+<p>
+
+Developed by
+
+<strong>
+Rudra Narayan Rauta
+</strong>
+
+</p>
+
+
+
+<p>
+
+© 2026 CryptoShield.
+All Rights Reserved.
+
+</p>
+
+
+
+</footer>
+
+
+
+
 
 <script src="script.js"></script>
 

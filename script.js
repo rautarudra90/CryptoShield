@@ -1,22 +1,248 @@
-/* =====================================
-        CryptoShield JavaScript
-   ===================================== */
+/* =====================================================
+   CryptoShield
+   Modern Multi Encryption System
+
+   Developer:
+   Rudra Narayan Rauta
+
+   Technologies:
+   Web Crypto API
+===================================================== */
 
 
 
-// ================= INTRO ANIMATION =================
+// ================================
+// DOM ELEMENTS
+// ================================
 
 
-window.addEventListener("load",()=>{
+const algorithm =
+document.getElementById("algorithm");
 
-    setTimeout(()=>{
 
-        document
-        .getElementById("intro")
-        .classList
-        .add("hide");
+const inputText =
+document.getElementById("inputText");
 
-    },2000);
+
+const secretKey =
+document.getElementById("secretKey");
+
+
+const outputText =
+document.getElementById("outputText");
+
+
+const status =
+document.getElementById("status");
+
+
+const encryptBtn =
+document.getElementById("encryptBtn");
+
+
+const decryptBtn =
+document.getElementById("decryptBtn");
+
+
+const rsaBtn =
+document.getElementById("rsaBtn");
+
+
+const copyBtn =
+document.getElementById("copyBtn");
+
+
+const downloadBtn =
+document.getElementById("downloadBtn");
+
+
+const clearBtn =
+document.getElementById("clearBtn");
+
+
+
+
+// ================================
+// RSA STORAGE
+// ================================
+
+
+let rsaKeys = null;
+
+
+
+
+
+// ================================
+// STATUS SYSTEM
+// ================================
+
+
+function updateStatus(message){
+
+status.innerHTML = message;
+
+}
+
+
+
+
+function loading(){
+
+status.innerHTML =
+`
+<span>
+⏳ Processing...
+</span>
+`;
+
+}
+
+
+
+
+
+// ================================
+// ENCRYPT BUTTON
+// ================================
+
+
+encryptBtn.addEventListener(
+"click",
+async()=>{
+
+
+if(inputText.value.trim()===""){
+
+updateStatus(
+"⚠ Enter text first"
+);
+
+return;
+
+}
+
+
+
+loading();
+
+
+
+let type =
+algorithm.value;
+
+
+
+try{
+
+
+let result;
+
+
+
+switch(type){
+
+
+case "AES":
+
+result =
+await encryptAES(
+inputText.value,
+secretKey.value
+);
+
+break;
+
+
+
+case "RSA":
+
+result =
+await encryptRSA(
+inputText.value
+);
+
+break;
+
+
+
+case "CAESAR":
+
+result =
+caesarEncrypt(
+inputText.value,
+secretKey.value
+);
+
+break;
+
+
+
+case "ROT13":
+
+result =
+rot13(
+inputText.value
+);
+
+break;
+
+
+
+case "BASE64":
+
+result =
+base64Encode(
+inputText.value
+);
+
+break;
+
+
+
+case "BINARY":
+
+result =
+textToBinary(
+inputText.value
+);
+
+break;
+
+
+default:
+
+result="";
+
+
+}
+
+
+
+outputText.value=result;
+
+
+updateStatus(
+"✅ Encryption Successful"
+);
+
+
+
+}
+
+catch(error){
+
+
+console.log(error);
+
+
+updateStatus(
+"❌ Encryption Failed"
+);
+
+
+}
+
 
 
 });
@@ -24,466 +250,411 @@ window.addEventListener("load",()=>{
 
 
 
-// ================= PAGE SWITCH =================
 
 
-function startApp(){
 
-    document.getElementById("homePage")
-    .style.display="none";
 
 
-    document.getElementById("toolPage")
-    .style.display="flex";
+// ================================
+// DECRYPT BUTTON
+// ================================
 
-}
 
+decryptBtn.addEventListener(
+"click",
+async()=>{
 
 
-// ================= RSA VARIABLES =================
+loading();
 
 
-let rsaPublicKey=null;
-let rsaPrivateKey=null;
+let type =
+algorithm.value;
 
 
 
+try{
 
-// ================= GENERATE RSA KEYS =================
 
+let result;
 
-function generateRSA(){
 
 
-    /*
-        Demo RSA Values
+switch(type){
 
-        p = 61
-        q = 53
 
-        n = 3233
-        e = 17
-        d = 2753
 
-    */
+case "AES":
 
+result =
+await decryptAES(
+outputText.value,
+secretKey.value
+);
 
-    rsaPublicKey={
+break;
 
-        e:17,
-        n:3233
 
-    };
 
+case "RSA":
 
-    rsaPrivateKey={
+result =
+await decryptRSA(
+outputText.value
+);
 
-        d:2753,
-        n:3233
+break;
 
-    };
 
 
+case "CAESAR":
 
-    alert(
-        "RSA Demo Keys Generated Successfully!"
-    );
+result =
+caesarDecrypt(
+outputText.value,
+secretKey.value
+);
 
+break;
 
-}
 
 
+case "ROT13":
 
+result =
+rot13(
+outputText.value
+);
 
+break;
 
-// ================= ENCRYPT FUNCTION =================
 
 
-function encrypt(){
+case "BASE64":
 
+result =
+base64Decode(
+outputText.value
+);
 
-    let algo=getAlgorithm();
+break;
 
-    let text=getInput();
 
-    let key=getKey();
 
+case "BINARY":
 
+result =
+binaryToText(
+outputText.value
+);
 
-    if(text.trim()===""){
-
-        alert("Please enter text");
-        return;
-
-    }
-
-
-
-    let result="";
-
-
-
-    try{
-
-
-        // AES
-
-        if(algo==="aes"){
-
-
-            if(key===""){
-
-                alert("Enter AES secret key");
-                return;
-
-            }
-
-
-            result =
-            CryptoJS.AES.encrypt(
-                text,
-                key
-            ).toString();
-
-
-        }
-
-
-
-
-
-        // RSA
-
-        else if(algo==="rsa"){
-
-
-            if(!rsaPublicKey){
-
-                alert(
-                "Generate RSA keys first"
-                );
-
-                return;
-
-            }
-
-
-
-            result=text
-            .split("")
-            .map(char=>{
-
-
-                return modPower(
-                    char.charCodeAt(0),
-                    rsaPublicKey.e,
-                    rsaPublicKey.n
-                );
-
-
-            })
-            .join(" ");
-
-
-        }
-
-
-
-
-
-        // Base64
-
-        else if(algo==="base64"){
-
-
-            result =
-            btoa(
-                text
-            );
-
-
-        }
-
-
-
-
-
-        // Caesar Cipher
-
-        else if(algo==="caesar"){
-
-
-            let shift=parseInt(key)||0;
-
-
-            result =
-            caesarEncrypt(
-                text,
-                shift
-            );
-
-
-        }
-
-
-
-
-
-        // ROT13
-
-        else if(algo==="rot13"){
-
-
-            result =
-            rot13(text);
-
-
-        }
-
-
-
-
-
-        // Binary
-
-        else if(algo==="binary"){
-
-
-            result =
-            text
-            .split("")
-            .map(
-                c=>
-                c.charCodeAt(0)
-                .toString(2)
-            )
-            .join(" ");
-
-
-        }
-
-
-
-        setOutput(result);
-
-
-    }
-
-    catch(error){
-
-        alert(
-            "Encryption Error"
-        );
-
-    }
+break;
 
 
 }
 
 
 
+outputText.value=result;
 
 
+updateStatus(
+"✅ Decryption Successful"
+);
 
 
-// ================= DECRYPT FUNCTION =================
 
+}
 
+catch(error){
 
-function decrypt(){
 
+console.log(error);
 
-    let algo=getAlgorithm();
 
-    let text=getInput();
+updateStatus(
+"❌ Decryption Failed"
+);
 
-    let key=getKey();
 
+}
 
-    if(text.trim()===""){
 
-        alert("Please enter encrypted text");
-        return;
 
-    }
+});
 
 
 
-    let result="";
 
 
 
-    try{
 
 
-        // AES
 
+// =====================================================
+// AES ENCRYPTION
+// Web Crypto API
+// =====================================================
 
-        if(algo==="aes"){
 
 
-            result =
-            CryptoJS.AES.decrypt(
-                text,
-                key
-            )
-            .toString(
-                CryptoJS.enc.Utf8
-            );
+async function encryptAES(
+text,
+password
+){
 
 
-        }
 
+if(password.length < 4){
 
+throw "Weak Key";
 
+}
 
 
 
-        // RSA
+const encoder =
+new TextEncoder();
 
 
-        else if(algo==="rsa"){
 
+const data =
+encoder.encode(text);
 
-            if(!rsaPrivateKey){
 
-                alert(
-                "Generate RSA keys first"
-                );
 
-                return;
+const passwordKey =
+await crypto.subtle.importKey(
 
-            }
+"raw",
 
+encoder.encode(password),
 
+"PBKDF2",
 
-            result =
-            text
-            .trim()
-            .split(/\s+/)
-            .map(num=>{
+false,
 
+["deriveKey"]
 
-                return String.fromCharCode(
+);
 
-                    modPower(
-                        parseInt(num),
-                        rsaPrivateKey.d,
-                        rsaPrivateKey.n
-                    )
 
-                );
 
 
-            })
-            .join("");
 
+const aesKey =
+await crypto.subtle.deriveKey(
 
 
-        }
+{
 
+name:"PBKDF2",
 
+salt:
+encoder.encode("CryptoShield"),
 
+iterations:100000,
 
+hash:"SHA-256"
 
+},
 
 
-        // Base64
+passwordKey,
 
 
-        else if(algo==="base64"){
+{
 
+name:"AES-GCM",
 
-            result =
-            atob(text);
+length:256
 
+},
 
-        }
 
+false,
 
 
+[
+"encrypt",
+"decrypt"
+]
 
 
+);
 
-        // Caesar
 
 
-        else if(algo==="caesar"){
 
 
-            let shift=parseInt(key)||0;
 
+const iv =
+crypto.getRandomValues(
+new Uint8Array(12)
+);
 
-            result =
-            caesarDecrypt(
-                text,
-                shift
-            );
 
 
-        }
 
 
+const encrypted =
+await crypto.subtle.encrypt(
 
+{
 
+name:"AES-GCM",
 
+iv:iv
 
-        // ROT13
+},
 
+aesKey,
 
-        else if(algo==="rot13"){
+data
 
+);
 
-            result =
-            rot13(text);
 
 
-        }
 
 
+return arrayBufferToBase64(
 
+new Uint8Array(
 
+[
 
+...iv,
 
+...new Uint8Array(encrypted)
 
-        // Binary
+]
 
+)
 
-        else if(algo==="binary"){
+);
 
 
-            result =
-            text
-            .split(/\s+/)
-            .map(
-                b=>
-                String.fromCharCode(
-                    parseInt(b,2)
-                )
-            )
-            .join("");
 
-        }
+}
+// =====================================================
+// AES DECRYPTION
+// =====================================================
 
 
+async function decryptAES(
+encryptedText,
+password
+){
 
 
-        setOutput(result);
+const encoder =
+new TextEncoder();
 
 
+const encryptedBytes =
+base64ToArrayBuffer(
+encryptedText
+);
 
-    }
 
 
-    catch(error){
+const iv =
+encryptedBytes.slice(
+0,
+12
+);
 
 
-        alert(
-        "Decryption Failed"
-        );
 
+const data =
+encryptedBytes.slice(
+12
+);
 
-    }
+
+
+const passwordKey =
+await crypto.subtle.importKey(
+
+"raw",
+
+encoder.encode(password),
+
+"PBKDF2",
+
+false,
+
+["deriveKey"]
+
+);
+
+
+
+
+const aesKey =
+await crypto.subtle.deriveKey(
+
+{
+
+name:"PBKDF2",
+
+salt:
+encoder.encode("CryptoShield"),
+
+iterations:100000,
+
+hash:"SHA-256"
+
+},
+
+
+passwordKey,
+
+
+{
+
+name:"AES-GCM",
+
+length:256
+
+},
+
+
+false,
+
+
+[
+"encrypt",
+"decrypt"
+]
+
+);
+
+
+
+
+const decrypted =
+await crypto.subtle.decrypt(
+
+{
+
+name:"AES-GCM",
+
+iv:iv
+
+},
+
+aesKey,
+
+data
+
+);
+
+
+
+return new TextDecoder()
+.decode(decrypted);
 
 
 }
@@ -493,52 +664,102 @@ function decrypt(){
 
 
 
-// ================= CAESAR =================
+
+// =====================================================
+// RSA KEY GENERATION
+// =====================================================
 
 
 
-function caesarEncrypt(text,shift){
+rsaBtn.addEventListener(
+"click",
+async()=>{
 
 
-    return text.replace(/[a-z]/gi,char=>{
+loading();
 
 
-        let base =
-        char <= "Z"
-        ?65
-        :97;
+
+try{
 
 
-        return String.fromCharCode(
-
-            (
-                char.charCodeAt(0)
-                -
-                base
-                +
-                shift
-            )
-            %26
-            +
-            base
-
-        );
+rsaKeys =
+await generateRSAKeys();
 
 
-    });
+
+updateStatus(
+"🔑 RSA Key Pair Generated Successfully"
+);
+
+
+
+}
+
+catch(error){
+
+
+console.log(error);
+
+
+updateStatus(
+"❌ RSA Generation Failed"
+);
 
 
 }
 
 
 
-function caesarDecrypt(text,shift){
+});
 
 
-    return caesarEncrypt(
-        text,
-        26-shift
-    );
+
+
+
+
+
+async function generateRSAKeys(){
+
+
+
+return await crypto.subtle.generateKey(
+
+
+{
+
+
+name:"RSA-OAEP",
+
+
+modulusLength:2048,
+
+
+publicExponent:
+new Uint8Array(
+[1,0,1]
+),
+
+
+hash:"SHA-256"
+
+
+
+},
+
+
+
+true,
+
+
+
+[
+"encrypt",
+"decrypt"
+]
+
+
+);
 
 
 }
@@ -548,38 +769,252 @@ function caesarDecrypt(text,shift){
 
 
 
-// ================= ROT13 =================
+
+// =====================================================
+// RSA ENCRYPTION
+// =====================================================
+
+
+
+async function encryptRSA(text){
+
+
+
+if(!rsaKeys){
+
+throw "Generate RSA Key First";
+
+}
+
+
+
+const encoded =
+new TextEncoder()
+.encode(text);
+
+
+
+
+const encrypted =
+await crypto.subtle.encrypt(
+
+{
+
+name:"RSA-OAEP"
+
+},
+
+rsaKeys.publicKey,
+
+encoded
+
+);
+
+
+
+return arrayBufferToBase64(
+
+new Uint8Array(encrypted)
+
+);
+
+
+
+}
+
+
+
+
+
+
+
+// =====================================================
+// RSA DECRYPTION
+// =====================================================
+
+
+
+async function decryptRSA(text){
+
+
+
+if(!rsaKeys){
+
+throw "RSA Key Missing";
+
+}
+
+
+
+const data =
+base64ToArrayBuffer(text);
+
+
+
+const decrypted =
+await crypto.subtle.decrypt(
+
+{
+
+name:"RSA-OAEP"
+
+},
+
+rsaKeys.privateKey,
+
+data
+
+);
+
+
+
+return new TextDecoder()
+.decode(decrypted);
+
+
+}
+
+
+
+
+
+
+
+
+// =====================================================
+// CAESAR CIPHER
+// =====================================================
+
+
+
+function caesarEncrypt(
+text,
+shift
+){
+
+
+
+shift =
+parseInt(shift)||3;
+
+
+
+return text.replace(
+/[a-z]/gi,
+char=>{
+
+
+let base =
+char<="Z"
+?
+65
+:
+97;
+
+
+
+return String.fromCharCode(
+
+(
+char.charCodeAt(0)
+-
+base
++
+shift
+)
+%26
++
+base
+
+);
+
+
+}
+
+);
+
+
+}
+
+
+
+
+
+
+function caesarDecrypt(
+text,
+shift
+){
+
+
+shift =
+parseInt(shift)||3;
+
+
+
+return caesarEncrypt(
+text,
+26-shift
+);
+
+
+}
+
+
+
+
+
+
+
+
+
+// =====================================================
+// ROT13
+// =====================================================
+
 
 
 function rot13(text){
 
 
-    return text.replace(/[a-z]/gi,char=>{
+
+return text.replace(
+
+/[a-z]/gi,
+
+char=>{
 
 
-        let base =
-        char<="Z"
-        ?65
-        :97;
+let base =
+char<="Z"
+?
+65
+:
+97;
 
 
-        return String.fromCharCode(
 
-            (
-            char.charCodeAt(0)
-            -
-            base
-            +
-            13
-            )
-            %26
-            +
-            base
+return String.fromCharCode(
 
-        );
+(
+char.charCodeAt(0)
+-
+base
++
+13
+)
+%26
++
+base
+
+);
 
 
-    });
+
+}
+
+);
+
 
 
 }
@@ -590,42 +1025,40 @@ function rot13(text){
 
 
 
-// ================= RSA MATH =================
+
+// =====================================================
+// BASE64
+// =====================================================
 
 
 
-function modPower(base,exp,mod){
+function base64Encode(text){
 
 
-    let result=1;
+return btoa(
+unescape(
+encodeURIComponent(text)
+)
+);
 
 
-    base=base%mod;
+}
 
 
 
-    while(exp>0){
+
+function base64Decode(text){
 
 
-        if(exp%2===1){
+return decodeURIComponent(
 
-            result=
-            (result*base)%mod;
+escape(
 
-        }
+atob(text)
 
+)
 
-        exp=Math.floor(exp/2);
-
-
-        base=
-        (base*base)%mod;
-
-
-    }
-
-
-    return result;
+);
 
 
 }
@@ -636,26 +1069,235 @@ function modPower(base,exp,mod){
 
 
 
-// ================= CLEAR =================
+
+
+// =====================================================
+// BINARY CONVERSION
+// =====================================================
 
 
 
-function clearAll(){
+function textToBinary(text){
 
 
-    document
-    .getElementById("inputText")
-    .value="";
+
+return text
+.split("")
+.map(
+char=>
+
+char
+.charCodeAt(0)
+.toString(2)
+.padStart(8,"0")
+
+)
+.join(" ");
 
 
-    document
-    .getElementById("secretKey")
-    .value="";
+
+}
 
 
-    document
-    .getElementById("outputText")
-    .value="";
+
+
+function binaryToText(binary){
+
+
+
+return binary
+.split(" ")
+.map(
+
+byte=>
+
+String.fromCharCode(
+parseInt(byte,2)
+)
+
+)
+.join("");
+
+}
+
+
+
+
+
+
+
+
+// =====================================================
+// COPY OUTPUT
+// =====================================================
+
+
+
+copyBtn.addEventListener(
+"click",
+()=>{
+
+
+if(outputText.value===""){
+
+updateStatus(
+"⚠ Nothing to Copy"
+);
+
+return;
+
+}
+
+
+
+navigator.clipboard.writeText(
+outputText.value
+);
+
+
+
+updateStatus(
+"📋 Output Copied"
+);
+
+
+
+});
+
+
+
+
+
+
+
+
+// =====================================================
+// DOWNLOAD RESULT
+// =====================================================
+
+
+
+downloadBtn.addEventListener(
+"click",
+()=>{
+
+
+const blob =
+new Blob(
+
+[
+outputText.value
+
+],
+
+{
+type:"text/plain"
+}
+
+);
+
+
+
+const url =
+URL.createObjectURL(blob);
+
+
+
+const link =
+document.createElement("a");
+
+
+link.href=url;
+
+
+link.download=
+"CryptoShield_Result.txt";
+
+
+link.click();
+
+
+
+URL.revokeObjectURL(url);
+
+
+
+updateStatus(
+"📥 File Downloaded"
+);
+
+
+
+});
+
+
+
+
+
+
+
+
+
+// =====================================================
+// CLEAR FUNCTION
+// =====================================================
+
+
+
+clearBtn.addEventListener(
+"click",
+()=>{
+
+
+inputText.value="";
+
+secretKey.value="";
+
+outputText.value="";
+
+
+updateStatus(
+"🧹 Cleared"
+);
+
+
+
+});
+
+
+
+
+
+
+
+
+// =====================================================
+// ARRAY BUFFER HELPERS
+// =====================================================
+
+
+
+function arrayBufferToBase64(bytes){
+
+
+
+let binary="";
+
+
+
+bytes.forEach(
+byte=>{
+
+binary +=
+String.fromCharCode(byte);
+
+}
+
+);
+
+
+
+return btoa(binary);
 
 
 }
@@ -665,43 +1307,46 @@ function clearAll(){
 
 
 
-// ================= HELPERS =================
+function base64ToArrayBuffer(base64){
 
+const binary =
+atob(base64);
 
-function getAlgorithm(){
+const bytes =
+new Uint8Array(binary.length);
 
-    return document
-    .getElementById("algo")
-    .value;
+for(
+let i=0;
+i<binary.length;
+i++
+){
+
+bytes[i]=
+binary.charCodeAt(i);
+
+}
+
+return bytes.buffer;
 
 }
 
 
 
-function getInput(){
-
-    return document
-    .getElementById("inputText")
-    .value;
-
-}
 
 
 
-function getKey(){
-
-    return document
-    .getElementById("secretKey")
-    .value;
-
-}
+// =====================================================
+// PAGE START
+// =====================================================
 
 
 
-function setOutput(value){
+window.onload=()=>{
 
-    document
-    .getElementById("outputText")
-    .value=value;
 
-}
+updateStatus(
+"🛡 CryptoShield Ready"
+);
+
+
+};
